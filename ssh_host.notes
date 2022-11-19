@@ -1,0 +1,46 @@
+//https://blog.leandrotoledo.org/how-to-enable-ssh-on-home-assistant-os/
+//https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
+
+//create ssh keygen file
+$ ssh-keygen -t ed25519 -C "your_email@example.com"
+
+//check to see if ssh document exist
+open ~/.ssh/config
+
+
+format usb to fat with CONFIG as 
+mkfs.vfat -n CONFIG /dev/sdb1
+
+mount drive 
+mount /dev/sdb1 /mnt
+
+copy autorization from default location and filename to required location and filename
+cat /home/$USER/.ssh/id_rsa.pub > /mnt/authorized_keys
+
+unmount
+umount /dev/sdb1 && eject /dev/sdb
+
+put private key file on usb drive
+
+
+use home assistant addon web terminal
+ha import os
+
+
+
+ssh to home assistant 
+ssh root@homeass.local -p 22222
+
+# Logs from the supervisor service on the Host OS
+journalctl -f -u hassos-supervisor.service
+
+# Supervisor logs
+docker logs hassio_supervisor
+
+# Home Assistant logs
+docker logs homeassistant
+
+
+accessing container bash
+docker exec -it homeassistant /bin/bash
